@@ -3,7 +3,7 @@ Tracker — unified experiment tracking interfaces.
 
 Usage:
     tracker = WBTracker("muon_exp", project="ml-crucible")
-    tracker.add_metrics(step=1, train_loss=0.42, val_acc=0.87)
+    tracker.track_metrics(step=1, train_loss=0.42, val_acc=0.87)
     tracker.finish()
 """
 from __future__ import annotations
@@ -22,17 +22,17 @@ class BaseTracker(ABC):
         pass
 
     @abstractmethod
-    def add_metrics(self, step: int, **metrics: Any) -> None:
+    def track_metrics(self, step: int, **metrics: Any) -> None:
         """Log numerical values (e.g. loss, accuracy) over time."""
         pass
 
     @abstractmethod
-    def add_config(self, **params: Any) -> None:
+    def track_config(self, **params: Any) -> None:
         """Add to the static configuration/hyperparameters for the run."""
         pass
 
     @abstractmethod
-    def add_summary(self, **metrics: Any) -> None:
+    def track_summary(self, **metrics: Any) -> None:
         """Log final summary metrics (e.g. best_val_acc)."""
         pass
 
@@ -59,15 +59,15 @@ class WBTracker(BaseTracker):
             **kwargs,
         )
 
-    def add_metrics(self, step: int, **metrics: Any) -> None:
+    def track_metrics(self, step: int, **metrics: Any) -> None:
         if self._run is not None:
             self._run.log({"step": step, **metrics}, step=step)
 
-    def add_config(self, **params: Any) -> None:
+    def track_config(self, **params: Any) -> None:
         if self._run is not None:
             self._run.config.update(params)
 
-    def add_summary(self, **metrics: Any) -> None:
+    def track_summary(self, **metrics: Any) -> None:
         if self._run is not None:
             for k, v in metrics.items():
                 self._run.summary[k] = v
@@ -76,3 +76,4 @@ class WBTracker(BaseTracker):
         """Explicitly finish the W&B run."""
         if self._run is not None:
             self._run.finish()
+
