@@ -1,11 +1,3 @@
-"""
-Tracker — unified experiment tracking interfaces.
-
-Usage:
-    tracker = WBTracker("muon_exp", project="ml-crucible")
-    tracker.track_metrics(step=1, train_loss=0.42, val_acc=0.87)
-    tracker.finish()
-"""
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
@@ -52,10 +44,15 @@ class WBTracker(BaseTracker):
         config: dict[str, Any] | None = None,
         **kwargs: Any,
     ):
+        
+        # Ensure config is a dict, even if None was passed
+        if config is None:
+            config = {}
+            
         self._run = wandb.init(
             project=project,
             name=run_name,
-            config=config or {},
+            config=config,
             **kwargs,
         )
 
