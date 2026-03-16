@@ -29,20 +29,3 @@ class Job(AbstractJob):
 
 
 JOB_CLASS = Job
-
-def build_default_config() -> dict[str, Any]:
-	return {
-		"log_dir": "logs",
-		"log_console_level": "INFO",
-		"log_file_level": "DEBUG",
-	}
-
-
-def main() -> None:
-	job = Job(config=build_default_config())
-	result = job.run()
-	pprint.pprint(result)
-
-
-if __name__ == "__main__":
-	main()
