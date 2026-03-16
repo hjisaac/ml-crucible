@@ -1,7 +1,7 @@
 from abc import abstractmethod
 
 from core.jobs.standalone import AbstractJob
-from core.mixins.deep_learning import GradientDescentMixin
+from core.mixins.sgd import GradientDescentMixin
 
 
 class AbstractTrainerJob(AbstractJob):
