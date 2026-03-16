@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-import argparse
 import logging
+import pprint
 import sys
 from pathlib import Path
 from typing import Any
@@ -16,7 +16,7 @@ from core.jobs import AbstractJob
 logger = logging.getLogger(__name__)
 
 
-class IdentityJob(AbstractJob):
+class Job(AbstractJob):
 	"""Minimal concrete job used to validate the run pipeline."""
 
 	def setup_data(self) -> None:
@@ -28,6 +28,8 @@ class IdentityJob(AbstractJob):
 		return {"status": "ok", "task": "identity"}
 
 
+JOB_CLASS = Job
+
 def build_default_config() -> dict[str, Any]:
 	return {
 		"log_dir": "logs",
@@ -37,12 +39,9 @@ def build_default_config() -> dict[str, Any]:
 
 
 def main() -> None:
-	parser = argparse.ArgumentParser(description="Run the first minimal task.")
-	parser.parse_args()
-
-	job = IdentityJob(config=build_default_config())
+	job = Job(config=build_default_config())
 	result = job.run()
-	print(result)
+	pprint.pprint(result)
 
 
 if __name__ == "__main__":

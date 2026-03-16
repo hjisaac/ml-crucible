@@ -14,4 +14,4 @@ dependencies = [
 ]
 
 [project.scripts]
-ml-crucible = "runs.mlp.runner:main"
+crucible = "uiapp.cli:main"
