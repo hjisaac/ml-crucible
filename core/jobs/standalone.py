@@ -33,9 +33,8 @@ class AbstractJob(metaclass=ABCMeta):
 		# Inputs setup happens here.
 		self.setup_data()
 
-	@abstractmethod
 	def setup_tracker(self) -> None:
-		pass
+		self.tracker = None
 
 	@abstractmethod
 	def run(self) -> None:
