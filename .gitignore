@@ -5,6 +5,11 @@ __pycache__/
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
+.eggs/
+*.egg-info/
+dist/
+build/
+pip-wheel-metadata/
 
 logs/
 wandb/
