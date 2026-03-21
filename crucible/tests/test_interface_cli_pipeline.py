@@ -12,7 +12,7 @@ from typer.testing import CliRunner
 
 import interface.cli.cli as ui_cli
 import interface.cli.utils as ui_utils
-from core.runtime import context as runtime_context
+from core.constants import RUNS_ROOT
 from omegaconf import OmegaConf
 
 
@@ -83,7 +83,10 @@ def _assert_generated_package_is_valid(created: Path) -> None:
 def demo_run_environment(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
 	runs_root = _write_demo_run_package(tmp_path)
 	monkeypatch.syspath_prepend(str(tmp_path))
-	monkeypatch.setattr(runtime_context, "RUNS_ROOT", runs_root)
+	import core.constants
+	import core.config.loader
+	monkeypatch.setattr(core.constants, "RUNS_ROOT", runs_root)
+	monkeypatch.setattr(core.config.loader, "RUNS_ROOT", runs_root)
 	monkeypatch.setattr(ui_utils, "RUNS_ROOT", runs_root)
 	_clear_runs_modules()
 	return tmp_path
