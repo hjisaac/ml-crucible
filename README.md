@@ -4,19 +4,24 @@ Composable Python job runner with dynamic job discovery, Hydra config overrides,
 
 ## What This Project Is
 
-`run-crucible` is a lightweight framework for organizing and running modular "runs" under the `runs/` directory.
 
-Each run package provides:
+`run-crucible` is a lightweight framework for organizing and running modular "runs" under the `my_runs/` directory (formerly `runs/`).
 
-- A concrete job class (`Job` or `JOB_CLASS`) derived from `AbstractJob`
-- A config folder (`configs/`) with YAML configs
+
+## How to Create and Use Runs
+
+All user experiments and jobs live in the `my_runs/` folder. Each run is a Python package with:
+
+- A concrete job class (`Job` or `JOB_CLASS`) derived from `AbstractJob` (see example below)
+- A `configs/` folder with YAML configs (e.g., `default.yaml`)
 - Optional run-specific logic, models, and training behavior
 
-The CLI auto-discovers available runs and executes them with config and override support.
+The CLI auto-discovers available runs in `my_runs/` and executes them with config and override support.
+
 
 ## Highlights
 
-- Dynamic run discovery from `runs/<name>/`
+- Dynamic run discovery from `my_runs/<name>/`
 - Typer-based CLI via `crucible`
 - Hydra-powered config loading and runtime overrides
 - Per-run logging to console and file
@@ -64,60 +69,22 @@ You can also run via module:
 uv run python -m interface.cli
 ```
 
+
 ## How It Works
 
-1. The CLI scans `runs/` for package folders containing `__init__.py`.
+1. The CLI scans `my_runs/` for package folders containing `__init__.py`.
 2. For each discovered run, it registers a command with the same name.
-3. At runtime, it resolves `JOB_CLASS` or `Job` from `runs.<run_name>`.
-4. It loads `runs/<run_name>/configs/<config>.yaml` using Hydra.
+3. At runtime, it resolves `JOB_CLASS` or `Job` from `my_runs.<run_name>`.
+4. It loads `my_runs/<run_name>/configs/<config>.yaml` using Hydra.
 5. Overrides passed by `-o/--override` are applied.
 6. The job is instantiated and executed.
 
-## Project Structure
+## More About the Framework
 
-```text
-core/
-	jobs/            # Abstract job interfaces
+If you are interested in the internal code structure, see [crucible/README.md](crucible/README.md).
 		abstract.py
-		standalone.py
-		training.py
-	runtime/         # Run discovery and execution orchestration
-		discovery.py
-		execution.py
-		context.py
-	config/          # Config loading and override utilities
-		loader.py
-		overrides.py
-	handlers/        # Runtime handlers (logging, I/O, etc.)
-		logger.py
-	trackers/        # Experiment tracker interfaces and implementations
-		abstract.py
-		wandb.py
-
-plugins/
-	ml/              # Optional ML plugin modules
-		datasets/
-		models/
-		losses/
-		optimizers/
-		schedulers/
-
 runs/
-	mlp/             # Example run package
-		__init__.py
-		runner.py
-		configs/
-			default.yaml
-		outputs/
-
-interface/
-	cli/
-		cli.py          # Typer app entrypoint
-		utils.py        # CLI scaffolding and template helpers
-
 tests/
-	test_interface_cli_pipeline.py
-```
 
 ## Create a New Run
 
