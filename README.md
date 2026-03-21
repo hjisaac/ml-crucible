@@ -1,11 +1,11 @@
-# run-crucible
+# Crucible
 
 Composable Python job runner with dynamic job discovery, Hydra config overrides, and a Typer CLI.
 
 ## What This Project Is
 
 
-`run-crucible` is a lightweight framework for organizing and running modular "runs" under the `my_runs/` directory (formerly `runs/`).
+`Crucible` is a lightweight framework for organizing and running modular "runs" under the `my_runs/` directory (formerly `runs/`).
 
 
 ## How to Create and Use Runs
