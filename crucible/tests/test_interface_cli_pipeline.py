@@ -87,8 +87,8 @@ def _assert_generated_package_is_valid(created: Path) -> None:
 def demo_run_environment(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
 	runs_root = _write_demo_run_package(tmp_path)
 	monkeypatch.syspath_prepend(str(tmp_path))
-	monkeypatch.setattr(core.constants, "RUNS_ROOT", runs_root)
-	monkeypatch.setattr(core.config.loader, "RUNS_ROOT", runs_root)
+	monkeypatch.setattr(constants, "RUNS_ROOT", runs_root)
+	monkeypatch.setattr(loader, "RUNS_ROOT", runs_root)
 	monkeypatch.setattr(ui_utils, "RUNS_ROOT", runs_root)
 	_clear_runs_modules()
 	return tmp_path
@@ -127,7 +127,7 @@ def test_list_available_runs_reads_temp_runs_folder(tmp_path, monkeypatch) -> No
 	runs_root = _write_demo_run_package(tmp_path)
 	monkeypatch.setattr(constants, "RUNS_ROOT", runs_root)
 	monkeypatch.setattr(ui_utils, "RUNS_ROOT", runs_root)
-	monkeypatch.setattr(core.runtime.discovery, "RUNS_ROOT", runs_root)
+	monkeypatch.setattr(discovery, "RUNS_ROOT", runs_root)
 
 	assert ui_utils.list_available_runs() == ["demo"]
 
